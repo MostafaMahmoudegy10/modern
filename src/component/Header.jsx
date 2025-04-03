@@ -70,6 +70,11 @@ const Header = () => {
             <li>
               {log}
             </li>
+            <li>
+               <Link to="/signup" className="text-white hover:bg-white/20">
+                Signup
+              </Link>
+            </li>
           </ul>
         </div>
 
@@ -116,7 +121,6 @@ const Header = () => {
           </div>
         )}
 
-        {/* الأيقونات اليمنى (السلة والمستخدم) */}
         <div className="flex-none gap-4">
           <div className="dropdown dropdown-end">
             <div tabIndex={0} role="button" className="btn btn-ghost btn-circle text-white">

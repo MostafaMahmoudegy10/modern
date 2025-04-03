@@ -6,7 +6,6 @@ const Login = () => {
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-50 to-gray-100 p-4 text-black">
       <div className="flex w-full max-w-6xl bg-white rounded-2xl shadow-xl overflow-hidden">
-        {/* Image Section */}
         <div className="hidden md:flex flex-1 relative">
           <img 
             src={login}
