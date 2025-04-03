@@ -13,8 +13,7 @@ import About from "./pages/aboutus/About"
 function App() {
 
   return (
-    <>
-      <div>
+      <div className="bg-white h-[100vh]">
         <Header />
         <Routes>
           <Route path="/" element={<Home />} />
@@ -25,11 +24,9 @@ function App() {
           <Route path="/wislist" element={<Wislist />}/>
           <Route path="/about" element={<About />}/>
           <Route path="*" element={<Error />}/>
-
         </Routes>
         <Footer />
       </div>
-    </>
   )
 }
 
