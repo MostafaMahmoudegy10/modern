@@ -3,25 +3,29 @@ import { Link } from "react-router-dom";
 import login from '../assets/login.jpg';
 
 const Login = () => {
+  
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-50 to-gray-100 p-4 text-black">
+      
       <div className="flex w-full max-w-6xl bg-white rounded-2xl shadow-xl overflow-hidden">
+       
         <div className="hidden md:flex flex-1 relative">
           <img 
             src={login}
             alt="Shopping"
             className="w-full h-full object-cover"
           />
+
           <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent flex items-end p-8">
             <div>
               <h2 className="text-3xl font-bold text-white mb-2">Welcome Back</h2>
               <p className="text-gray-200">Sign in to access exclusive deals and personalized recommendations</p>
             </div>
           </div>
-        </div>
-        
-        {/* Form Section */}
+        </div>        
+
         <div className="flex-1 p-8 md:p-12">
+          
           <div className="max-w-md mx-auto">
             <div className="text-center md:text-left mb-8">
               <h1 className="text-3xl font-bold text-gray-900 mb-2">Log in to Exclusive</h1>
@@ -77,6 +81,7 @@ const Login = () => {
                 Log In
               </button>
               
+
               <div className="relative my-6">
                 <div className="absolute inset-0 flex items-center">
                   <div className="w-full border-t border-gray-300"></div>
@@ -96,7 +101,7 @@ const Login = () => {
                   </svg>
                   <span>Google</span>
                 </button>
-                
+
                 <button 
                   type="button"
                   className="flex items-center justify-center space-x-2 py-2 px-4 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
@@ -104,6 +109,7 @@ const Login = () => {
                   <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                     <path fillRule="evenodd" d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z" clipRule="evenodd" />
                   </svg>
+                  
                   <span>Facebook</span>
                 </button>
               </div>

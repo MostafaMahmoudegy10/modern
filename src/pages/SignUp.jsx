@@ -18,9 +18,7 @@ const Signup = () => {
               <p className="text-gray-200">Create your account to unlock exclusive benefits</p>
             </div>
           </div>
-        </div>
-        
-        {/* Form Section */}
+        </div>        
         <div className="flex-1 p-8 md:p-12">
           <div className="max-w-md mx-auto">
             <div className="text-center md:text-left mb-8">

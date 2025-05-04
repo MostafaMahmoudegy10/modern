@@ -1,116 +1,102 @@
-import React from 'react';
-const Home = () => {
-  return (
-    <div className="min-h-screen bg-gray-50">
-      <div className="container mx-auto py-8 px-4 lg:px-8 flex flex-col lg:flex-row gap-8">
-        <aside className="w-full lg:w-1/5 bg-white p-6 rounded-xl shadow-md hover:shadow-lg transition-shadow">
-          <h3 className="text-xl font-bold mb-6 pb-2 border-b border-gray-200 text-gray-900 flex items-center">
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
-              <path fillRule="evenodd" d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clipRule="evenodd" />
-            </svg>
-            Categories
-          </h3>
-          <ul className="space-y-4">
-            {[
-              { name: "Women's Clothing", icon: "👚" },
-              { name: "Men's Clothing", icon: "👔" },
-              { name: "Jewelry & Watches", icon: "💎" },
-              { name: "Bags & Shoes", icon: "👜" },
-              { name: "Scarves", icon: "🧣" },
-              { name: "New Collection", icon: "🆕" },
-              { name: "Best Selling", icon: "🔥" },
-              { name: "View All", icon: "👀" }
-            ].map((item) => (
-              <li 
-                key={item.name}
-                className="flex items-center cursor-pointer hover:text-red-600 transition-colors py-2 px-3 rounded-lg hover:bg-red-50 font-medium text-gray-700"
-              >
-                <span className="mr-3 text-lg">{item.icon}</span>
-                {item.name}
-              </li>
-            ))}
-          </ul>
-        </aside>
+import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import ProductCard from './ProductCard'; // Assuming you have the ProductCard component
 
-        <main className="w-full lg:w-4/5 space-y-8">
-          <div className="relative rounded-2xl overflow-hidden shadow-xl">
-            <img 
-              src="https://images.unsplash.com/photo-1483985988355-763728e1935b?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" 
-              alt="New Collection" 
-              className="w-full h-72 md:h-96 object-cover"
-            />
-            <div className="absolute inset-0 bg-gradient-to-r from-black/40 to-transparent flex items-center pl-12 md:pl-16">
-              <div className="text-white max-w-md">
-                <span className="text-red-400 font-semibold text-sm uppercase tracking-wider mb-2 inline-block">New Arrivals</span>
-                <h2 className="text-3xl md:text-4xl font-bold mb-4 leading-tight">Spring Collection 2023</h2>
-                <p className="text-gray-200 mb-6">Discover our fresh new styles for the season</p>
-                <button className="bg-red-600 hover:bg-red-700 text-white px-8 py-3 rounded-lg transition-all font-medium shadow-lg hover:shadow-xl transform hover:-translate-y-1">
-                  Shop Now →
-                </button>
-              </div>
-            </div>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {[
-              { 
-                title: 'All Items', 
-                subtitle: 'Browse all products',
-                img: 'https://images.unsplash.com/photo-1551232864-3f0890e580d9?ixlib=rb-1.2.1&auto=format&fit=crop&w=634&q=80' 
-              },
-              { 
-                title: 'Best Selling', 
-                subtitle: 'Top rated products',
-                img: 'https://images.unsplash.com/photo-1523381210434-271e8be1f52b?ixlib=rb-1.2.1&auto=format&fit=crop&w=634&q=80' 
-              },
-              { 
-                title: 'Sale', 
-                subtitle: 'Limited time offers',
-                img: 'https://images.unsplash.com/photo-1543076447-215ad9ba6923?ixlib=rb-1.2.1&auto=format&fit=crop&w=634&q=80' 
-              }
-            ].map((product, index) => (
-              <div key={index} className="relative group rounded-xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300">
-                <img 
-                  src={product.img} 
-                  alt={product.title} 
-                  className="w-full h-72 object-cover transition-transform group-hover:scale-110 duration-500"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/40 to-transparent flex flex-col justify-end p-6">
-                  <h3 className="text-white text-2xl font-bold mb-1">{product.title}</h3>
-                  <p className="text-gray-200 mb-4">{product.subtitle}</p>
-                  <button className="self-start bg-white text-gray-900 px-6 py-2 rounded-md font-medium hover:bg-gray-100 transition-colors transform group-hover:translate-x-2 duration-300">
-                    Explore
-                  </button>
-                </div>
-              </div>
+const Home = () => {
+  const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const response = await fetch('http://localhost:8080/api/products');
+        if (!response.ok) {
+          throw new Error('Failed to fetch products');
+        }
+        const data = await response.json();
+        setProducts(data);
+      } catch (err) {
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProducts();
+  }, []);
+
+  const handleCategoryClick = (label) => {
+    const category = label === "Men" ? "men " : "women";
+    navigate(`/category/${encodeURIComponent(category)}`);
+  };
+
+  if (loading) return (
+    <div className="flex justify-center items-center h-64">
+      <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-indigo-600"></div>
+    </div>
+  );
+
+  if (error) return (
+    <div className="p-6 text-red-500 text-center">
+      Error loading products: {error}
+    </div>
+  );
+
+  return (
+    <div className="container mx-auto px-4 py-8 bg-white">
+      <section className="mb-12 bg-gradient-to-r from-indigo-50 to-purple-50 rounded-xl p-8 md:p-12 text-center">
+        <h1 className="text-3xl md:text-4xl font-bold text-gray-800 mb-4">Discover Our Collection</h1>
+        <p className="text-gray-600 max-w-2xl mx-auto mb-6">
+          Find the perfect products for your style and needs
+        </p>
+        <div className="flex flex-wrap justify-center gap-4">
+          {["Women", "Men"].map((label) => (
+            <button
+              key={label}
+              onClick={() => handleCategoryClick(label)}
+              className="bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-3 px-6 rounded-lg transition-all duration-300 shadow-md hover:shadow-lg"
+            >
+              Shop {label}
+            </button>
+          ))}
+        </div>
+      </section>
+
+      {/* Featured Products */}
+      <section className="mb-12">
+        <h2 className="text-2xl md:text-3xl font-bold text-gray-800 mb-6">Featured Products</h2>
+        {products.length > 0 ? (
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
+            {products.slice(0, 10).map((product) => (
+              <ProductCard key={product.id} product={product} />
             ))}
           </div>
-          <div className="bg-gradient-to-r from-red-50 to-pink-50 p-8 rounded-2xl shadow-inner">
-            <div className="flex flex-col md:flex-row items-center">
-              <div className="md:w-1/2 mb-6 md:mb-0 md:pr-8">
-                <h3 className="text-2xl font-bold text-gray-800 mb-3">Join Our Newsletter</h3>
-                <p className="text-gray-600 mb-4">Get 15% off your first order and updates on new arrivals</p>
-                <div className="flex">
-                  <input 
-                    type="email" 
-                    placeholder="Your email address" 
-                    className="flex-grow px-4 py-3 rounded-l-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-red-500"
-                  />
-                  <button className="bg-red-600 hover:bg-red-700 text-white px-6 py-3 rounded-r-lg transition-colors font-medium">
-                    Subscribe
-                  </button>
-                </div>
+        ) : (
+          <p className="text-gray-500 text-center py-8">No products available</p>
+        )}
+      </section>
+
+      {/* Categories Section */}
+      <section>
+        <h2 className="text-2xl md:text-3xl font-bold text-gray-800 mb-6">Shop by Category</h2>
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+          {['Electronics', 'Clothing', 'Home', 'Beauty'].map((category) => (
+            <div 
+              key={category}
+              className="bg-white rounded-xl shadow-sm hover:shadow-md transition-shadow p-6 text-center cursor-pointer border border-gray-100 hover:border-indigo-200"
+              onClick={() => navigate(`/category/${encodeURIComponent(category)}`)}
+            >
+              <div className="bg-indigo-50 w-16 h-16 mx-auto rounded-full flex items-center justify-center mb-3">
+                <span className="text-indigo-600 text-2xl">🛍️</span>
               </div>
-              <div className="md:w-1/2">
-                <img 
-                  src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?ixlib=rb-1.2.1&auto=format&fit=crop&w=634&q=80" 
-                  alt="Special Offer" 
-                  className="w-full h-48 object-cover rounded-lg shadow-md"
-                />
-              </div>
+              <h3 className="font-medium text-gray-800">{category}</h3>
+              <p className="text-sm text-gray-500 mt-1">Shop now</p>
             </div>
-          </div>
-        </main>
-      </div>
+          ))}
+        </div>
+      </section>
     </div>
   );
 };
